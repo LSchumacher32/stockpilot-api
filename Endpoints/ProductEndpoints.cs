@@ -103,6 +103,12 @@ public static class ProductEndpoints
             return Results.Ok(product);
         });
 
+        group.MapDelete("/", async (StockPilotContext db) =>
+        {
+            var count = await db.Products.ExecuteDeleteAsync();
+            return Results.Ok(new { deleted = count });
+        });
+
         group.MapDelete("/{id:int}", async (int id, StockPilotContext db) =>
         {
             var product = await db.Products.FindAsync(id);

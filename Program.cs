@@ -39,7 +39,7 @@ if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
 
 app.UseHttpsRedirection();
 
-app.MapGet("/", () => "StockPilot API läuft");
+app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 app.MapProductEndpoints();
 app.MapLookupEndpoints();
 
