@@ -1,24 +1,40 @@
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using StockPilot.Data;
+using StockPilot.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<StockPilotContext>(options =>
-    options.UseSqlite("Data Source=stockpilot.db"));
-
+    options.UseSqlite(builder.Configuration.GetConnectionString("Default")
+                      ?? "Data Source=stockpilot.db"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// Middleware: globale Fehlerbehandlung
+app.UseExceptionHandler(errorApp => errorApp.Run(async ctx =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    ctx.Response.StatusCode = StatusCodes.Status500InternalServerError;
+    await ctx.Response.WriteAsJsonAsync(new { message = "Unexpected server error." });
+}));
+
+// Middleware: Request-Logging
+app.Use(async (ctx, next) =>
+{
+    var sw = Stopwatch.StartNew();
+    await next();
+    sw.Stop();
+    app.Logger.LogInformation("{Method} {Path} -> {Status} in {Ms} ms",
+        ctx.Request.Method, ctx.Request.Path, ctx.Response.StatusCode, sw.ElapsedMilliseconds);
+});
+
+if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
 
 app.UseHttpsRedirection();
 
 app.MapGet("/", () => "StockPilot API läuft");
+app.MapProductEndpoints();
 
 app.Run();

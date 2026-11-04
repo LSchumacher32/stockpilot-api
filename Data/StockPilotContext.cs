@@ -14,6 +14,13 @@ namespace StockPilot.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Product>(e =>
+            {
+                e.Property(p => p.Price).HasConversion<double>();
+                e.Property(p => p.ProductName).HasMaxLength(100).IsRequired();
+                e.Property(p => p.Category).HasMaxLength(50).IsRequired();
+            });
+
             modelBuilder.Entity<Product>().HasData(
     // Electronics
         new Product { Id = 1, ProductName = "Bluetooth Maus", Category = "Electronics", Price = 24.90m, StockLevel = 8 },

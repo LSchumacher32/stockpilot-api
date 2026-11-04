@@ -24,13 +24,15 @@ namespace StockPilot.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StockLevel")
@@ -45,7 +47,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 1,
                             Category = "Electronics",
-                            Price = 24.90m,
+                            Price = 24.899999999999999,
                             ProductName = "Bluetooth Maus",
                             StockLevel = 8
                         },
@@ -53,7 +55,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 2,
                             Category = "Electronics",
-                            Price = 79.99m,
+                            Price = 79.989999999999995,
                             ProductName = "Mechanische Tastatur",
                             StockLevel = 35
                         },
@@ -61,7 +63,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 3,
                             Category = "Electronics",
-                            Price = 39.90m,
+                            Price = 39.899999999999999,
                             ProductName = "USB-C Hub 7-in-1",
                             StockLevel = 52
                         },
@@ -69,7 +71,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 4,
                             Category = "Electronics",
-                            Price = 189.00m,
+                            Price = 189.0,
                             ProductName = "27-Zoll Monitor",
                             StockLevel = 6
                         },
@@ -77,7 +79,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 5,
                             Category = "Electronics",
-                            Price = 49.50m,
+                            Price = 49.5,
                             ProductName = "Webcam Full HD",
                             StockLevel = 22
                         },
@@ -85,7 +87,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 6,
                             Category = "Electronics",
-                            Price = 94.90m,
+                            Price = 94.900000000000006,
                             ProductName = "Externe SSD 1 TB",
                             StockLevel = 14
                         },
@@ -93,7 +95,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 7,
                             Category = "Electronics",
-                            Price = 7.99m,
+                            Price = 7.9900000000000002,
                             ProductName = "HDMI-Kabel 2 m",
                             StockLevel = 140
                         },
@@ -101,7 +103,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 8,
                             Category = "Office",
-                            Price = 5.49m,
+                            Price = 5.4900000000000002,
                             ProductName = "Druckerpapier A4 500 Blatt",
                             StockLevel = 300
                         },
@@ -109,7 +111,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 9,
                             Category = "Office",
-                            Price = 3.99m,
+                            Price = 3.9900000000000002,
                             ProductName = "Kugelschreiber 10er Set",
                             StockLevel = 180
                         },
@@ -117,7 +119,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 10,
                             Category = "Office",
-                            Price = 2.79m,
+                            Price = 2.79,
                             ProductName = "Ordner A4 breit",
                             StockLevel = 95
                         },
@@ -125,7 +127,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 11,
                             Category = "Office",
-                            Price = 8.90m,
+                            Price = 8.9000000000000004,
                             ProductName = "Tacker mit Heftklammern",
                             StockLevel = 4
                         },
@@ -133,7 +135,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 12,
                             Category = "Office",
-                            Price = 1.99m,
+                            Price = 1.99,
                             ProductName = "Haftnotizen Block",
                             StockLevel = 210
                         },
@@ -141,7 +143,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 13,
                             Category = "Office",
-                            Price = 249.00m,
+                            Price = 249.0,
                             ProductName = "Bürostuhl ergonomisch",
                             StockLevel = 9
                         },
@@ -149,7 +151,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 14,
                             Category = "Office",
-                            Price = 29.90m,
+                            Price = 29.899999999999999,
                             ProductName = "Schreibtischlampe LED",
                             StockLevel = 27
                         },
@@ -157,7 +159,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 15,
                             Category = "Gaming",
-                            Price = 59.90m,
+                            Price = 59.899999999999999,
                             ProductName = "Gaming Headset 7.1",
                             StockLevel = 31
                         },
@@ -165,7 +167,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 16,
                             Category = "Gaming",
-                            Price = 44.99m,
+                            Price = 44.990000000000002,
                             ProductName = "Gaming Controller Wireless",
                             StockLevel = 18
                         },
@@ -173,7 +175,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 17,
                             Category = "Gaming",
-                            Price = 14.90m,
+                            Price = 14.9,
                             ProductName = "XXL Mauspad",
                             StockLevel = 75
                         },
@@ -181,7 +183,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 18,
                             Category = "Gaming",
-                            Price = 279.00m,
+                            Price = 279.0,
                             ProductName = "Gaming Stuhl Pro",
                             StockLevel = 5
                         },
@@ -189,7 +191,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 19,
                             Category = "Gaming",
-                            Price = 69.00m,
+                            Price = 69.0,
                             ProductName = "RGB Tastatur 60 %",
                             StockLevel = 12
                         },
@@ -197,7 +199,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 20,
                             Category = "Gaming",
-                            Price = 119.00m,
+                            Price = 119.0,
                             ProductName = "Capture Card 4K",
                             StockLevel = 7
                         },
@@ -205,7 +207,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 21,
                             Category = "SmartHome",
-                            Price = 12.99m,
+                            Price = 12.99,
                             ProductName = "Smarte Steckdose WLAN",
                             StockLevel = 160
                         },
@@ -213,7 +215,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 22,
                             Category = "SmartHome",
-                            Price = 9.49m,
+                            Price = 9.4900000000000002,
                             ProductName = "LED-Lampe E27 RGB",
                             StockLevel = 88
                         },
@@ -221,7 +223,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 23,
                             Category = "SmartHome",
-                            Price = 64.90m,
+                            Price = 64.900000000000006,
                             ProductName = "Smarter Thermostat",
                             StockLevel = 15
                         },
@@ -229,7 +231,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 24,
                             Category = "SmartHome",
-                            Price = 34.99m,
+                            Price = 34.990000000000002,
                             ProductName = "Überwachungskamera Innen",
                             StockLevel = 9
                         },
@@ -237,7 +239,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 25,
                             Category = "SmartHome",
-                            Price = 17.90m,
+                            Price = 17.899999999999999,
                             ProductName = "Tür- und Fenstersensor",
                             StockLevel = 42
                         },
@@ -245,7 +247,7 @@ namespace StockPilot.Migrations
                         {
                             Id = 26,
                             Category = "SmartHome",
-                            Price = 89.00m,
+                            Price = 89.0,
                             ProductName = "Smart Speaker mit Display",
                             StockLevel = 3
                         });
