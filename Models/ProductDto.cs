@@ -1,3 +1,8 @@
 ﻿namespace StockPilot.Models;
 
-public record ProductDto(string ProductName, string Category, decimal Price, int StockLevel);
+public record ProductDto(
+    string ProductName,
+    int CategoryId,
+    int SupplierId,
+    decimal Price,
+    int StockLevel);

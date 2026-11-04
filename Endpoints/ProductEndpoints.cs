@@ -16,7 +16,7 @@ public static class ProductEndpoints
             IQueryable<Product> query = db.Products.AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(category))
-                query = query.Where(p => p.Category == category);
+                query = query.Where(p => p.Category.Name == category);
             if (maxStock.HasValue)
                 query = query.Where(p => p.StockLevel <= maxStock.Value);
 
@@ -27,16 +27,39 @@ public static class ProductEndpoints
                 "stock" => desc ? query.OrderByDescending(p => p.StockLevel) : query.OrderBy(p => p.StockLevel),
                 _ => query.OrderBy(p => p.ProductName)
             };
-            return Results.Ok(await query.ToListAsync());
+            return Results.Ok(await query
+                .Select(p => new
+                {
+                    p.Id,
+                    p.ProductName,
+                    p.Price,
+                    p.StockLevel,
+                    p.CategoryId,
+                    p.SupplierId,
+                    Category = p.Category.Name,
+                    Supplier = p.Supplier.Name
+                })
+                .ToListAsync());
+
         });
 
-        // Beispiel für sicheres Raw SQL: Interpolation wird zu SQL-Parametern
         group.MapGet("/search", async (StockPilotContext db, string name) =>
         {
             var pattern = $"%{name}%";
             var result = await db.Products
                 .FromSqlInterpolated($"SELECT * FROM Products WHERE ProductName LIKE {pattern}")
                 .AsNoTracking()
+                .Select(p => new
+                {
+                    p.Id,
+                    p.ProductName,
+                    p.Price,
+                    p.StockLevel,
+                    p.CategoryId,
+                    p.SupplierId,
+                    Category = p.Category.Name,
+                    Supplier = p.Supplier.Name
+                })
                 .ToListAsync();
             return Results.Ok(result);
         });
@@ -53,7 +76,8 @@ public static class ProductEndpoints
             var product = new Product
             {
                 ProductName = dto.ProductName.Trim(),
-                Category = dto.Category.Trim(),
+                CategoryId = dto.CategoryId,
+                SupplierId = dto.SupplierId,
                 Price = dto.Price,
                 StockLevel = dto.StockLevel
             };
@@ -71,7 +95,8 @@ public static class ProductEndpoints
             if (product is null) return Results.NotFound(new { message = $"Product {id} not found" });
 
             product.ProductName = dto.ProductName.Trim();
-            product.Category = dto.Category.Trim();
+            product.CategoryId = dto.CategoryId;
+            product.SupplierId = dto.SupplierId;
             product.Price = dto.Price;
             product.StockLevel = dto.StockLevel;
             await db.SaveChangesAsync();
@@ -94,8 +119,10 @@ public static class ProductEndpoints
         var errors = new Dictionary<string, string[]>();
         if (string.IsNullOrWhiteSpace(dto.ProductName) || dto.ProductName.Length > 100)
             errors["productName"] = new[] { "Name is required (max 100 characters)." };
-        if (string.IsNullOrWhiteSpace(dto.Category) || dto.Category.Length > 50)
-            errors["category"] = new[] { "Category is required (max 50 characters)." };
+        if (dto.CategoryId <= 0)
+            errors["categoryId"] = new[] { "Category is required." };
+        if (dto.SupplierId <= 0)
+            errors["supplierId"] = new[] { "Supplier is required." };
         if (dto.Price <= 0)
             errors["price"] = new[] { "Price must be greater than 0." };
         if (dto.StockLevel < 0)

@@ -13,14 +13,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Middleware: globale Fehlerbehandlung
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<StockPilotContext>();
+    db.Database.Migrate();
+    DbSeeder.Seed(db);
+}
+
 app.UseExceptionHandler(errorApp => errorApp.Run(async ctx =>
 {
     ctx.Response.StatusCode = StatusCodes.Status500InternalServerError;
     await ctx.Response.WriteAsJsonAsync(new { message = "Unexpected server error." });
 }));
 
-// Middleware: Request-Logging
 app.Use(async (ctx, next) =>
 {
     var sw = Stopwatch.StartNew();
