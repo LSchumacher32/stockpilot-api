@@ -41,5 +41,6 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "StockPilot API läuft");
 app.MapProductEndpoints();
+app.MapLookupEndpoints();
 
 app.Run();
